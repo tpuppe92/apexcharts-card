@@ -1182,6 +1182,10 @@ class ChartsCard extends LitElement {
     this._yAxisConfig?.map((yaxis) => {
       if (yaxis.min_type !== minmax_type.FIXED || yaxis.max_type !== minmax_type.FIXED) {
         const minMax = yaxis.series_id?.map((id) => {
+          // Skip series that are currently hidden
+          if (this._apexChart?.series[id].visible === false) {
+            return undefined;
+          }
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const lMinMax = this._graphs![id]?.minMaxWithTimestampForYAxis(
             this._seriesOffset[id] ? new Date(start.getTime() + this._seriesOffset[id]).getTime() : start.getTime(),
